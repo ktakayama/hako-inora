@@ -140,9 +140,9 @@ function init(){
 	check_menu();
 	SelectList();
 
-	if((document.layers) || (document.all)){  // IE4¡¢IE5¡¢NN4
-		window.document.onmouseup = menuclose;
-	}
+//	if((document.layers) || (document.all)){  // IE4¡¢IE5¡¢NN4
+//		window.document.onmouseup = menuclose;
+//	}
 }
 
 function cominput(theForm, x, k) {
@@ -152,7 +152,7 @@ function cominput(theForm, x, k) {
 	d = theForm.POINTY.options[theForm.POINTY.selectedIndex].value;
 	e = theForm.AMOUNT.options[theForm.AMOUNT.selectedIndex].value;
 	f = theForm.TARGETID.options[theForm.TARGETID.selectedIndex].value;
-	if(x == 6){ b = k; menuclose();	}
+	if(x == 6){ b = k; }
 	if (x == 1 || x == 6){
 		for(i = $HcommandMax - 1; i > a; i--) {
 			command[i] = command[i-1];
@@ -214,6 +214,7 @@ function cominput(theForm, x, k) {
 	str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý¡ÝÌ¤Á÷¿®¡Ý¡Ý¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
 	disp(str, "white");
 	outp();
+	menuclose();
 	return true;
 }
 

@@ -164,7 +164,7 @@ sub makeNewLand {
 	}
 
 	# 中央の4*4に荒地を配置
-	my($center) = $HislandSize / 2 - 1;
+	my($center) = int($HislandSize / 2 - 1);
 	for($y = $center - 1; $y < $center + 3; $y++) {
 		 for($x = $center - 1; $x < $center + 3; $x++) {
 			 $land[$x][$y] = $HlandWaste;
