@@ -5,8 +5,7 @@
 #
 # 箱庭諸島のページ: http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html
 #----------------------------------------------------------------------
-# いのら諸島 ver1.05
-# 箱庭緒島（http://espion.s7.xrea.com/tyotou/）
+# いのら諸島
 #----------------------------------------------------------------------
 
 #----------------------------------------------------------------------
@@ -538,7 +537,7 @@ th			{ filter:blur(direction=120,strength=2) }
 $BODY
 <A HREF="http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html">箱庭諸島スクリプト配布元</A>
 　<A HREF="http://appoh.execweb.cx/hakoniwa/">箱庭Javaスクリプト版 配布元</A>
-　<A HREF="http://espion.s7.xrea.com/tyotou/">いのら諸島スクリプト配布元</A>
+　<A HREF="http://espion.just-size.jp/archives/dist_hako/">いのら諸島スクリプト配布元</A>
 　<A HREF="$toppage">トップページ</A>
 　<A HREF="$bbs">$bbsname</A>$time_
 　<A HREF="$HthisFile?LogFileView=1" target=_blank>最近の出来事</A>

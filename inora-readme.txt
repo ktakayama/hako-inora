@@ -1,8 +1,8 @@
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 
-　いのら諸島  readme -2003/06/01更新-
-　　By　ドン・ガバチョ（support@mc.neweb.ne.jp）
-　　　配布サイト　箱庭緒島（http://espion.s7.xrea.com/tyotou/）
+　いのら諸島  readme -2004/06/03更新-
+　　By　Kyosuke Takayama (ドン・ガバチョ) support@mc.neweb.ne.jp
+　　　配布ページ　(http://espion.just-size.jp/archives/dist_hako/)
 
 ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
 
@@ -20,7 +20,7 @@
 
 ・いのら諸島で追加、修正された箇所に関する質問は、
 	「いのら諸島専用掲示版」に
-　http://espion.s7.xrea.com/tdboard/tdboard.cgi?d=inora
+　http://espion.just-size.jp/tdboard/?d=support
 
 ・通常の箱庭２に関する質問は、オリジナル配布元の
 	「意見・質問・雑談・その他」掲示板に
