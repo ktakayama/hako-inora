@@ -9,7 +9,7 @@
 #
 # È¢Äí½ôÅç¤Î¥Ú¡¼¥¸: http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html
 #----------------------------------------------------------------------
-# ¤¤¤Î¤é½ôÅç ver1.02
+# ¤¤¤Î¤é½ôÅç ver1.03
 # È¢Äí½ïÅç¡Êhttp://espion.s7.xrea.com/tyotou/¡Ë
 #----------------------------------------------------------------------
 
@@ -825,7 +825,7 @@ sub cgiInput {
 		$HmainMode = 'change';
 	} elsif($getLine =~ /LogFileView=([0-9]*)/) {
 		$HmainMode = 'logView';
-		$Hlogturn = $1;
+		$Hlogturn = ($1 > $HlogMax) ? $HlogMax : $1;
 	} elsif($line =~ /NewIslandButton/) {
 		$HmainMode = 'new';
 	} elsif($line =~ /LbbsButton(..)([0-9]*)/) {
