@@ -377,7 +377,7 @@ function set_com(x, y, land) {
 			com_str += " ";
 		}
 	}
-	status = com_str;
+	window.status = com_str;
 	document.myForm.COMSTATUS.value= com_str;
 }
 

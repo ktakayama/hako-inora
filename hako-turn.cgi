@@ -3053,7 +3053,7 @@ sub tempNewIslandHead {
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function ShowMsg(n) {
-		status = n;
+		window.status = n;
 }
 //-->
 </SCRIPT>

@@ -662,7 +662,7 @@ $HtempBack<BR>
 <SCRIPT Language="JavaScript">
 <!--
 function ShowMsg(n){
-		status = n;
+		window.status = n;
 }
 //-->
 </SCRIPT>
@@ -721,7 +721,7 @@ function ns(x) {
 	return true;
 }
 function ShowMsg(n){
-		status = n;
+		window.status = n;
 }
 
 function SelectList(theForm){
