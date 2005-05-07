@@ -104,6 +104,7 @@ $HtempBack<BR>
 // ¤¢¤Ã¤Ý¡¼°ÃÈ¢Äí½ôÅç¡Ê http://appoh.execweb.cx/hakoniwa/ ¡Ë
 // Programmed by Jynichi Sakai(¤¢¤Ã¤Ý¡¼)
 // ¢¬ ºï½ü¤·¤Ê¤¤¤Ç²¼¤µ¤¤¡£
+var xmlhttp;
 var str;
 g = [$com_max];
 k1 = [$com_max];
@@ -136,39 +137,54 @@ function init(){
 	str = "<font color=blue>¡Ý¡Ý¡Ý¡Ý Á÷¿®ºÑ¤ß ¡Ý¡Ý¡Ý¡Ý</font><br>"+str;
 	disp(str, "#ccffcc");
 
-	check_menu();
 	SelectList();
 
-//	if((document.layers) || (document.all)){  // IE4¡¢IE5¡¢NN4
-//		window.document.onmouseup = menuclose;
-//	}
+	xmlhttp = new_http();
+
+	if(document.layers) {
+		document.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+	}
+	document.onmouseup   = Mup;
+	document.onmousemove = Mmove;
+	document.myForm.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = true;
 }
 
-function cominput(theForm, x, k) {
+function cominput(theForm, x, k, z) {
 	a = theForm.NUMBER.options[theForm.NUMBER.selectedIndex].value;
 	b = theForm.COMMAND.options[theForm.COMMAND.selectedIndex].value;
 	c = theForm.POINTX.options[theForm.POINTX.selectedIndex].value;
 	d = theForm.POINTY.options[theForm.POINTY.selectedIndex].value;
 	e = theForm.AMOUNT.options[theForm.AMOUNT.selectedIndex].value;
 	f = theForm.TARGETID.options[theForm.TARGETID.selectedIndex].value;
-	if(x == 6){ b = k; }
-	if (x == 1 || x == 6){
-		for(i = $HcommandMax - 1; i > a; i--) {
-			command[i] = command[i-1];
-			g[i] = g[i-1];
+	if (x == 1 || x == 2 || x == 6){
+		if(x == 6) b = k;
+		if(x != 2) {
+			for(i = $HcommandMax - 1; i > a; i--) {
+				command[i] = command[i-1];
+				g[i] = g[i-1];
+			}
 		}
+
+		for(s = 0; s < $com_count ;s++) {
+			var comlist2 = comlist[s];
+			for(i = 0; i < comlist2.length; i++){
+				if(comlist2[i][0] == b){
+					g[a] = comlist2[i][1];
+					break;
+				}
+			}
+		}
+		command[a] = [b,c,d,e,f];
+		ns(++a);
+		menuclose();
 	}else if(x == 3){
-		for(i = Math.floor(a); i < ($HcommandMax - 1); i++) {
+		var num = (k) ? k-1 : a;
+		for(i = Math.floor(num); i < ($HcommandMax - 1); i++) {
 			command[i] = command[i + 1];
 			g[i] = g[i+1];
 		}
 		command[$HcommandMax-1] = [41,0,0,0,0];
 		g[$HcommandMax-1] = '»ñ¶â·«¤ê';
-		str = plchg();
-		str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý¡ÝÌ¤Á÷¿®¡Ý¡Ý¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
-		disp(str,"white");
-		outp();
-		return true;
 	}else if(x == 4){
 		i = Math.floor(a)
 		if (i == 0){ return true; }
@@ -178,11 +194,6 @@ function cominput(theForm, x, k) {
 		k1[i] = g[i];k2[i] = g[i - 1];
 		g[i] = k2[i];g[i-1] = k1[i];
 		ns(--i);
-		str = plchg();
-		str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý¡ÝÌ¤Á÷¿®¡Ý¡Ý¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
-		disp(str,"white");
-		outp();
-		return true;
 	}else if(x == 5){
 		i = Math.floor(a)
 		if (i == $HcommandMax-1){ return true; }
@@ -190,30 +201,32 @@ function cominput(theForm, x, k) {
 		command[i] = tmpcom2[i];command[i+1] = tmpcom1[i];
 		k1[i] = g[i];k2[i] = g[i + 1];
 		g[i] = k2[i];g[i+1] = k1[i];
-		ns(++i);
-		str = plchg();
-		str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý¡ÝÌ¤Á÷¿®¡Ý¡Ý¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
-		disp(str,"white");
-		outp();
-		return true;
+	}else if(x == 7){
+		// °ÜÆ°
+		var ctmp = command[k];
+		var gtmp = g[k];
+		if(z > k) {
+			// ¾å¤«¤é²¼¤Ø
+			for(i = k; i < z-1; i++) {
+				command[i] = command[i+1];
+				g[i] = g[i+1];
+			}
+		} else {
+			// ²¼¤«¤é¾å¤Ø
+			for(i = k; i > z; i--) {
+				command[i] = command[i-1];
+				g[i] = g[i-1];
+			}
+		}
+		command[i] = ctmp;
+		g[i] = gtmp;
 	}
 
-	for(s = 0; s < $com_count ;s++) {
-	var comlist2 = comlist[s];
-	for(i = 0; i < comlist2.length; i++){
-		if(comlist2[i][0] == b){
-			g[a] = comlist2[i][1];
-			break;
-		}
-	}
-	}
-	command[a] = [b,c,d,e,f];
-	ns(++a);
 	str = plchg();
-	str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý¡ÝÌ¤Á÷¿®¡Ý¡Ý¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
+	str = "<font color=red><b>¡Ý¡Ý¡Ý¡Ý Ì¤Á÷¿® ¡Ý¡Ý¡Ý¡Ý</b></font><br>"+str;
 	disp(str, "white");
 	outp();
-	menuclose();
+	theForm.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = false;
 	return true;
 }
 
@@ -281,9 +294,14 @@ function plchg(){
 		tmpnum = '';
 		if(i < 9){ tmpnum = '0'; }
 		strn1 += 
-		'<A STYLE="text-decoration:none;color:000000" HREF="JavaScript:void(0);" onClick="ns(' + i + ')"><NOBR>' +
+        	'<div id="com_'+i+'" '+
+            'onmouseover="mc_over('+i+');return false;" '+
+			'><A STYLE="text-decoration:none;color:000000" HREF="JavaScript:void(0);" onClick="ns(' + i + ')" '+
+            'onmousedown="return comListMove('+i+');" '+
+            '><NOBR>' +
+
 		tmpnum + (i + 1) + ':' +
-		strn2 + '</NOBR></A><BR>\\n';
+		strn2 + '</NOBR></A></div>\\n';
 	}
 	return strn1;
 }
@@ -291,19 +309,15 @@ function plchg(){
 function disp(str,bgclr){
 	if(str==null)  str = "";
 
-	if(document.getElementById){
-		document.getElementById("LINKMSG1").innerHTML = str;
-		document.getElementById("plan").bgColor = bgclr;
-	} else if(document.all){
-		el = document.all("LINKMSG1");
-		el.innerHTML = str;
-		document.all.plan.bgColor = bgclr;
+	if(document.getElementById || document.all){
+		LayWrite('LINKMSG1', str);
+		SetBG('plan', bgclr);
 	} else if(document.layers) {
 		lay = document.layers["PARENT_LINKMSG"].document.layers["LINKMSG1"];
 		lay.document.open();
 		lay.document.write("<font style='font-size:11pt'>"+str+"</font>");
 		lay.document.close(); 
-		document.layers["PARENT_LINKMSG"].bgColor = bgclr;
+		SetBG("PARENT_LINKMSG", bgclr);
 	}
 }
 
@@ -322,12 +336,12 @@ function outp(){
 }
 
 function ps(x, y) {
-	document.forms[0].elements[4].options[x].selected = true;
-	document.forms[0].elements[5].options[y].selected = true;
+	document.myForm.POINTX.options[x].selected = true;
+	document.myForm.POINTY.options[y].selected = true;
 	document.myForm.POINTX.value = x;
 	document.myForm.POINTY.value = y;
 	if(!(document.myForm.MENUOPEN.checked))
-		moveLAYER("menu",mx,my);
+		moveLAYER("menu",mx+10,my-50);
 	return true;
 }
 
@@ -339,7 +353,7 @@ function SelectPOINT(){
 
 function ns(x) {
 	if (x == $HcommandMax){ return true; }
-	document.forms[0].elements[0].options[x].selected = true;
+	document.myForm.NUMBER.options[x].selected = true;
 	document.myForm.NUMBER.value = x;
 	return true;
 }
@@ -426,47 +440,28 @@ function SelectList(theForm){
 
 function moveLAYER(layName,x,y){
 	if(document.getElementById){		//NN6,IE5
-		if(document.all){				//IE5
-			el = document.getElementById(layName);
-			el.style.left= event.clientX + document.body.scrollLeft + 10;
-			el.style.top= event.clientY + document.body.scrollTop - 60;
-			el.style.display = "block";
-			el.style.visibility ='visible';
-		}else{
-			el = document.getElementById(layName);
-			el.style.left=x+10;
-			el.style.top=y-60;
-			el.style.display = "block";
-			el.style.visibility ='visible';
-		}
+		el = document.getElementById(layName);
+		el.style.left = x;
+		el.style.top  = y;
 	} else if(document.layers){				//NN4
 		msgLay = document.layers[layName];
-		msgLay.moveTo(x+10,y-60);
-		msgLay.visibility = "show";
+		msgLay.moveTo(x,y);
 	} else if(document.all){				//IE4
-		msgLay = document.all(layName);
-		msgLay.style.pixelLeft = x+10;
-		msgLay.style.pixelTop = y-60;
-		msgLay.style.display = "block";
-		msgLay.style.visibility = "visible";
+		msgLay = document.all(layName).style;
+		msgLay.pixelLeft = x;
+		msgLay.pixelTop = y;
 	}
 
 }
 
 function menuclose(){ 
-	if (document.getElementById){
-		document.getElementById("menu").style.display = "none";
-	} else if (document.layers){
-		document.menu.visibility = "hide";
-	} else if (document.all){
-		window["menu"].style.display = "none";
-	}
+	moveLAYER("menu",-500,-500);
 }
 
 function Mmove(e){
 	if(document.all){
-		mx = event.x;
-		my = event.y;
+		mx = event.x + document.body.scrollLeft;
+		my = event.y + document.body.scrollTop;
 	}else if(document.layers){
 		mx = e.pageX;
 		my = e.pageY;
@@ -474,27 +469,155 @@ function Mmove(e){
 		mx = e.pageX;
 		my = e.pageY;
 	}
+	return moveLay.move();
 }
 
-function check_menu(){
-	if(!(document.myForm.MENUOPEN.checked)){
-		if(document.getElementById){
-			document.onmousemove = Mmove;
-		} else if(document.layers){
-			window.captureEvents(Event.MOUSEMOVE);
-			window.onMouseMove = Mmove;
-		} else if(document.all){
-			document.onmousemove = Mmove;
-		}
-		document.myForm.MENUOPEN.value="";
-	}else{
-		document.myForm.MENUOPEN.value="on";
-	}
+function LayWrite(layName, str) {
+   if(document.getElementById){
+      document.getElementById(layName).innerHTML = str;
+   } else if(document.all){
+      document.all(layName).innerHTML = str;
+   } else if(document.layers){
+      lay = document.layers[layName];
+      lay.document.open();
+      lay.document.write(str);
+      lay.document.close(); 
+   }
+}
+ 
+
+function SetBG(layName, bgclr) {
+   if(document.getElementById) document.getElementById(layName).style.backgroundColor = bgclr;
+   else if(document.all)       document.all.layName.bgColor = bgclr;
+   //else if(document.layers)    document.layers[layName].bgColor = bgclr;
+}
+
+/* ¥³¥Þ¥ó¥É ¥É¥é¥Ã¥°¡õ¥É¥í¥Ã¥×ÍÑÄÉ²Ã¥¹¥¯¥ê¥×¥È */
+var moveLay = new MoveFalse();
+
+var newLnum = -2;
+var Mcommand = false;
+
+function Mup() {
+   moveLay.up();
+   moveLay = new MoveFalse();
+}
+
+function setBorder(num, color) {
+   if(document.getElementById) {
+      if(color.length == 4) document.getElementById('com_'+num).style.borderTop = ' 1px solid '+color;
+      else document.getElementById('com_'+num).style.border = '0px';
+   }
+}
+
+function mc_out() {
+   if(Mcommand && newLnum >= 0) {
+      setBorder(newLnum, '');
+      newLnum = -1;
+   }
+}
+
+function mc_over(num) {
+   if(Mcommand) {
+      if(newLnum >= 0) setBorder(newLnum, '');
+      newLnum = num;
+      setBorder(newLnum, '#116');    // blue
+   }
+}
+
+function comListMove(num) { moveLay = new MoveComList(num); return (document.layers) ? true : false; }
+
+function MoveFalse() {
+   this.move = function() { }
+   this.up   = function() { }
+}
+
+function MoveComList(num) {
+   var setLnum  = num;
+   Mcommand = true;
+
+   LayWrite('mc_div', '<NOBR><strong>'+(num+1)+': '+g[num]+'</strong></NOBR>');
+
+   this.move = function() {
+      moveLAYER('mc_div',mx+10,my-30);
+      return false;
+   }
+
+   this.up   = function() {
+      if(newLnum >= 0) {
+         var com = command[setLnum];
+         cominput(document.myForm,7,setLnum,newLnum);
+      }
+      else if(newLnum == -1) cominput(document.myForm,3,setLnum+1);
+
+      mc_out();
+      newLnum = -2;
+
+      Mcommand = false;
+      moveLAYER("mc_div",-50,-50);
+   }
+}
+
+
+/* ²èÌÌÁ«°ÜÌµ¤·¤Ç¤Î¥³¥Þ¥ó¥ÉÁ÷¿®ÍÑÄÉ²Ã¥¹¥¯¥ê¥×¥È */
+
+function new_http() {
+   if(document.getElementById) {
+      try{
+         return new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e){
+         try {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+         } catch (E){
+            if(typeof XMLHttpRequest != 'undefined') return new XMLHttpRequest;
+         }
+      }
+   }
+}
+
+function send_command(form) {
+   if (!xmlhttp) return true;
+
+   form.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = true;
+
+   var progress  = document.getElementById('progress');
+   progress.innerHTML = '<blink>Sending...</blink>';
+
+   if (xmlhttp.readyState == 1 || xmlhttp.readyState == 2 || xmlhttp.readyState == 3) return; 
+
+   xmlhttp.open("POST", "$HthisFile", true);
+   if(!window.opera) xmlhttp.setRequestHeader("referer", "$HthisFile");
+
+   xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+         var result = xmlhttp.responseText;
+         if(result.indexOf('OK') == 0 || result.indexOf('OK') == 2048) {
+            str = plchg();
+            str = "<font color=blue>¡Ý¡Ý¡Ý¡Ý Á÷¿®ºÑ¤ß ¡Ý¡Ý¡Ý¡Ý</font><br>"+str;
+            disp(str, "#CCFFDD");
+         } else {
+            alert("Á÷¿®¤Ë¼ºÇÔ¤·¤Þ¤·¤¿¡£");
+            form.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = false;
+         }
+         progress.innerHTML = '';
+      }
+   }
+
+   var post;
+   post += 'async=true&';
+   post += 'CommandJavaButton$island->{'id'}=true&';
+   post += 'JAVAMODE=java&';
+   post += 'COMARY='+form.COMARY.value+'&';
+   post += 'PASSWORD='+form.PASSWORD.value+'&';
+
+   xmlhttp.send(post);
+   return false;
 }
 
 //-->
 </SCRIPT>
-<DIV ID="menu" style="position:absolute; visibility:hidden;"> 
+<DIV ID="mc_div" style="background-color:white;position:absolute;top:-50;left:-50;">&nbsp;</DIV>
+<DIV ID="menu" style="position:absolute; top:-500;left:-500;"> 
 <TABLE BORDER=1 BGCOLOR=#e0ffff CELLSPACING=1>
 <TR><TD NOWRAP VALIGN=TOP NOWRAP>
 $click_com
@@ -518,7 +641,7 @@ END
 <TR valign=top>
 <TD $HbgInputCell width=200>
 <CENTER>
-<FORM name="myForm" action="$HthisFile" method=POST>
+<FORM name="myForm" action="$HthisFile" method=POST onsubmit="return send_command(this);">
 <P>
 <B>¥³¥Þ¥ó¥ÉÆþÎÏ</B><BR><B>
 <A HREF=JavaScript:void(0); onClick="cominput(myForm,1)">ÁÞÆþ</A>
@@ -534,17 +657,11 @@ END
 	out("<OPTION VALUE=$i>$j\n");
     }
 
-    if ($HmenuOpen eq 'on') {
-		$open = "CHECKED";
-	}else{
-		$open = "";
-	}
-
     out(<<END);
 </SELECT><BR>
 <HR>
 <B>³«È¯·×²è</B>
-<INPUT TYPE="checkbox" NAME="MENUOPEN"onClick="check_menu()" $open>ÈóÉ½\¼¨<br>
+<INPUT TYPE="checkbox" NAME="MENUOPEN">ÈóÉ½\¼¨<br>
 <SELECT NAME=menu onchange="SelectList(myForm)">
 <OPTION VALUE=>Á´¼ïÎà
 END
@@ -618,6 +735,7 @@ $HtargetList<BR>
 <INPUT TYPE="hidden" NAME="COMARY" value="comary">
 <INPUT TYPE="hidden" NAME="JAVAMODE" value="$HjavaMode">
 <INPUT TYPE=submit VALUE="·×²èÁ÷¿®" NAME=CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}>
+<span id="progress"></span>
 <br><font size=2>ºÇ¸å¤Ë<font color=red>·×²èÁ÷¿®¥Ü¥¿¥ó</font>¤ò<br>²¡¤¹¤Î¤òËº¤ì¤Ê¤¤¤è¤¦¤Ë¡£</font>
 <HR>
 <B>¥Ñ¥¹¥ï¡¼¥É</B></BR>
@@ -633,7 +751,7 @@ END
     out(<<END);
 </FORM>
 </TD>
-<TD $HbgCommandCell id="plan">
+<TD $HbgCommandCell id="plan" onmouseout="mc_out();return false;">
 <ilayer name="PARENT_LINKMSG" width="100%" height="100%">
    <layer name="LINKMSG1" width="200"></layer>
    <span id="LINKMSG1"></span>
@@ -736,12 +854,18 @@ sub commandJavaMain {
 			'target' => $5
 		};
 	}
-	tempCommandAdd();
+
 	# ¥Ç¡¼¥¿¤Î½ñ¤­½Ð¤·
     writeIslandsFile($HcurrentID);
 
-    # owner mode¤Ø
-    ownerMain();
+	if($Hasync) {
+		unlock();
+		out("Content-type: text/html\n\nOK");
+	} else {
+		tempCommandAdd();
+		# owner mode¤Ø
+		ownerMain();
+	}
 }
 
 #----------------------------------------------------------------------

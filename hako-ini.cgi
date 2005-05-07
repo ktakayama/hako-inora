@@ -502,6 +502,7 @@ $HbgCommandCell = 'BGCOLOR="#ccffcc"'; # 開発計画入力済み計画
 #----------------------------------------
 # ヘッダ
 sub tempHeader {
+	return if($Hasync);
 
 	my($HimgFlag) = 0;
 	if($HimgLine eq '' || $HimgLine eq $imageDir){

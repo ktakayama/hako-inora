@@ -805,6 +805,11 @@ sub cgiInput {
 		$HjavaMode = $1;
 	}
 
+	# 非同期通信フラグ
+	if($line =~ /async=true\&/) {
+		$Hasync = 1;
+	}
+
 	if($line =~ /CommandJavaButton([0-9]+)=/) {
 		# コマンド送信ボタンの場合（Ｊａｖａスクリプト）
 		$HcurrentID = $1;
