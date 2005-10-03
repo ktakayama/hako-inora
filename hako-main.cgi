@@ -1007,7 +1007,7 @@ sub file_lock {
 	closedir(LOCKDIR);
 
 	foreach (@filelist) {
-		if (/^$lfh{basename}(\d+)/) {
+		if (/^lockfile(\d+)/) {
 			return \%lfh if (time - $1 > $lfh{timeout} and
 			rename($lfh{dir} . $_, $lfh{current} = $lfh{path} . time));
 			last;
