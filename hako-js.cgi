@@ -87,9 +87,9 @@ sub tempOwnerJava {
 		$l_name =~ s/'/\\'/g;
 		$l_id = $Hislands[$i]->{'id'};
 		if($i == $HislandNumber-1){
-			$set_island .= "\[$l_id\,\'$l_name\'\]\n";
+			$set_island .= "$l_id\:\'$l_name\'\n";
 		}else{
-			$set_island .= "\[$l_id\,\'$l_name\'\]\,\n";
+			$set_island .= "$l_id\:\'$l_name\'\,\n";
 		}
 	}
 
@@ -118,8 +118,9 @@ comlist = [
 $set_listcom
 ];
 
-islname = [
-$set_island];
+islname = {
+$set_island
+};
 
 function init(){
 	for(i = 0; i < command.length ;i++) {
@@ -147,6 +148,7 @@ function init(){
 	document.onmouseup   = Mup;
 	document.onmousemove = Mmove;
 	document.myForm.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = true;
+	ns(0);
 }
 
 function cominput(theForm, x, k, z) {
@@ -156,6 +158,7 @@ function cominput(theForm, x, k, z) {
 	d = theForm.POINTY.options[theForm.POINTY.selectedIndex].value;
 	e = theForm.AMOUNT.options[theForm.AMOUNT.selectedIndex].value;
 	f = theForm.TARGETID.options[theForm.TARGETID.selectedIndex].value;
+	var newNs = a;
 	if (x == 1 || x == 2 || x == 6){
 		if(x == 6) b = k;
 		if(x != 2) {
@@ -175,7 +178,7 @@ function cominput(theForm, x, k, z) {
 			}
 		}
 		command[a] = [b,c,d,e,f];
-		ns(++a);
+		newNs++;
 		menuclose();
 	}else if(x == 3){
 		var num = (k) ? k-1 : a;
@@ -193,7 +196,7 @@ function cominput(theForm, x, k, z) {
 		command[i] = tmpcom2[i];command[i-1] = tmpcom1[i];
 		k1[i] = g[i];k2[i] = g[i - 1];
 		g[i] = k2[i];g[i-1] = k1[i];
-		ns(--i);
+		newNs = i-1;
 	}else if(x == 5){
 		i = Math.floor(a)
 		if (i == $HcommandMax-1){ return true; }
@@ -201,6 +204,7 @@ function cominput(theForm, x, k, z) {
 		command[i] = tmpcom2[i];command[i+1] = tmpcom1[i];
 		k1[i] = g[i];k2[i] = g[i + 1];
 		g[i] = k2[i];g[i+1] = k1[i];
+		newNs = i+1;
 	}else if(x == 7){
 		// 移動
 		var ctmp = command[k];
@@ -224,9 +228,10 @@ function cominput(theForm, x, k, z) {
 
 	str = plchg();
 	str = "<font color=red><b>−−−− 未送信 −−−−</b></font><br>"+str;
-	disp(str, "white");
+	disp(str, "#CCDDFF");
 	outp();
 	theForm.CommandJavaButton$Hislands[$HcurrentNumber]->{'id'}.disabled = false;
+	ns(newNs);
 	return true;
 }
 
@@ -239,11 +244,11 @@ function plchg(){
 		y = c[2];
 		tgt = c[4];
 		point = '<FONT COLOR="#a06040"><B>' + "(" + x + "," + y + ")" + '</B></FONT>';
-		for(j = 0; j < islname.length ; j++) {
-			if(tgt == islname[j][0]){
-				tgt = '<FONT COLOR="#a06040"><B>' + islname[j][1] + "島" + '</B></FONT>';
-			}
-		}
+		//for(j = 0; j < islname.length ; j++) {
+			//if(tgt == islname[j][0]){
+				tgt = '<FONT COLOR="#a06040"><B>' + islname[tgt] + "島" + '</B></FONT>';
+			//}
+		//}
 		if(c[0] == $HcomDoNothing || c[0] == $HcomGiveup){ // 資金繰り、島の放棄
 			strn2 = kind;
 		}else if(c[0] == $HcomMissileNM || // ミサイル関連
@@ -355,6 +360,7 @@ function ns(x) {
 	if (x == $HcommandMax){ return true; }
 	document.myForm.NUMBER.options[x].selected = true;
 	document.myForm.NUMBER.value = x;
+	selCommand(x);
 	return true;
 }
 
@@ -490,6 +496,13 @@ function SetBG(layName, bgclr) {
    if(document.getElementById) document.getElementById(layName).style.backgroundColor = bgclr;
    else if(document.all)       document.all.layName.bgColor = bgclr;
    //else if(document.layers)    document.layers[layName].bgColor = bgclr;
+}
+
+var oldNum=0;
+function selCommand(num) {
+   document.getElementById('com_'+oldNum).style.backgroundColor = '';
+   document.getElementById('com_'+num).style.backgroundColor = '#FFFFAA';
+   oldNum = num;
 }
 
 /* コマンド ドラッグ＆ドロップ用追加スクリプト */
@@ -648,7 +661,7 @@ END
 　<A HREF=JavaScript:void(0); onClick="cominput(myForm,2)">上書き</A>
 　<A HREF=JavaScript:void(0); onClick="cominput(myForm,3)">削除</A>
 </B><HR>
-<B>計画番号</B><SELECT NAME=NUMBER>
+<B>計画番号</B><SELECT NAME=NUMBER onchange="selCommand(this.selectedIndex)">
 END
     # 計画番号
     my($j, $i);
