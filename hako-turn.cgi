@@ -822,7 +822,7 @@ sub doCommand {
 		}
 
 		# 種類で分岐
-		if($kind == $HcomPlant) {
+		if($kind == $HcomPlant or $kind == $HcomFastPlant) {
 			# 目的の場所を森にする。
 			$land->[$x][$y] = $HlandForest;
 			$landValue->[$x][$y] = 1; # 木は最低単位
