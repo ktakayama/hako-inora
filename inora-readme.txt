@@ -1,6 +1,6 @@
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 
-　いのら諸島  readme -2004/06/03更新-
+　いのら諸島  readme -2005/10/03更新-
 　　By　Kyosuke Takayama (ドン・ガバチョ) support@mc.neweb.ne.jp
 　　　配布ページ　(http://espion.just-size.jp/archives/dist_hako/)
 
@@ -18,17 +18,16 @@
 
 　○ご質問はこちらへ・・・
 
-・いのら諸島で追加、修正された箇所に関する質問は、
-	「いのら諸島専用掲示版」に
-　http://espion.just-size.jp/tdboard/?d=support
-
 ・通常の箱庭２に関する質問は、オリジナル配布元の
 	「意見・質問・雑談・その他」掲示板に
-　http://t.pos.to/hako
+　http://t.pos.to/hako/
 
 ・スクリプト設置等に関するご質問は、Tsubasa's HomePageの
 	「ＣＧＩ駆け込み寺」に
 　http://village.infoweb.ne.jp/~sakatuba/
+
+・その他、バグ報告や提案等は「バグ情報」までお願いします
+　http://espion.just-size.jp/bts/html/guest.cgi?project=hakoniwa&action=top
 
 ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
 
