@@ -87,9 +87,9 @@ sub tempOwnerJava {
 		$l_name =~ s/'/\\'/g;
 		$l_id = $Hislands[$i]->{'id'};
 		if($i == $HislandNumber-1){
-			$set_island .= "$l_id\:\'$l_name\'\n";
+			$set_island .= "'$l_id'\:\'$l_name\'\n";
 		}else{
-			$set_island .= "$l_id\:\'$l_name\'\,\n";
+			$set_island .= "'$l_id'\:\'$l_name\'\,\n";
 		}
 	}
 
@@ -629,7 +629,7 @@ function send_command(form) {
 
 //-->
 </SCRIPT>
-<DIV ID="mc_div" style="background-color:white;position:absolute;top:-50;left:-50;">&nbsp;</DIV>
+<DIV ID="mc_div" style="background-color:white;position:absolute;top:-50;left:-50;height:1.2em;">&nbsp;</DIV>
 <DIV ID="menu" style="position:absolute; top:-500;left:-500;"> 
 <TABLE BORDER=1 BGCOLOR=#e0ffff CELLSPACING=1>
 <TR><TD NOWRAP VALIGN=TOP NOWRAP>
